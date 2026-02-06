@@ -63,7 +63,7 @@ const companies: Company[] = [
 export default function PartnerCompanies() {
     return (
         <section className={`py-12 px-4 sm:px-6 lg:px-8 ${inter.className}`}>
-            <div className="max-w-[1200px] mx-auto">
+            <div className="max-w-300 mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                         Partnyor tikinti şirkətləri
@@ -92,10 +92,10 @@ export default function PartnerCompanies() {
                     {companies.map((company) => (
                         <div
                             key={company.id}
-                            className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group h-[208px] flex flex-col justify-between border border-gray-300"
+                            className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group h-52 flex flex-col justify-between border border-gray-300"
                         >
                             <div className="flex items-center gap-4">
-                                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0 border-2 border-transparent group-hover:border-blue-500 transition-colors">
+                                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center shrink-0 border-2 border-transparent group-hover:border-blue-500 transition-colors">
                                     <Image
                                         src={company.logo}
                                         alt={company.name}

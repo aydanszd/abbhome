@@ -2,16 +2,21 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    domains: ['cdn.abbhome.az', 'abbhome.az'],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'abbhome.az',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.abbhome.az',
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
       },
     ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    unoptimized: process.env.NODE_ENV === 'development',
+  },
+  // Development'ta loopback IP'lere izin ver
+  experimental: {
+    allowedOrigins: ['localhost:5000'],
   },
 };
 

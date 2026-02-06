@@ -1,4 +1,3 @@
-// components/Footer.tsx
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
 
@@ -10,7 +9,7 @@ const inter = Inter({
 export default function Footer() {
     return (
         <footer className={`bg-[#F2F2F7] pt-16 pb-8 mt-16 ${inter.className}`}>
-            <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                     <div>
                         <h3 className="text-gray-900 font-bold text-[16px] mb-6">
