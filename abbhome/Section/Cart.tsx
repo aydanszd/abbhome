@@ -11,11 +11,8 @@ export default function MortgageLoans() {
     return (
         <div className={`min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 ${inter.className}`}>
             <div className="max-w-[1200px] mx-auto space-y-8">
-
-                {/* First Loan Product */}
                 <div className="bg-white overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
-                        {/* Left side - Image */}
                         <div className="relative bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-[20px] p-16 flex items-center justify-center w-full md:w-[416px] h-[416px] flex-shrink-0">
                             <div className="relative w-[416px] h-[416px]">
                                 <Image
@@ -27,8 +24,6 @@ export default function MortgageLoans() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right side - Content */}
                         <div className="flex-1 py-4">
                             <h2 className="text-[32px] font-medium text-gray-900 mb-5 leading-tight">
                                 Mənzil, fərdi yaşayış və bağ evləri üçün ipoteka krediti
@@ -37,8 +32,6 @@ export default function MortgageLoans() {
                             <p className="text-gray-600 text-[16px] leading-relaxed mb-8">
                                 Rəsmi gəliri olan müştərilərə yeni tikililərdə çıxarışlı və çıxarışsız mənzil, köhnə tikililərdə isə çıxarışlı mənzil, bağ və həyət evləri almaq imkanı təqdim edən daxili ipoteka kreditidir.
                             </p>
-
-                            {/* Loan Details Grid */}
                             <div className="grid grid-cols-4 gap-8 mb-8">
                                 <div className="space-y-1">
                                     <div className="text-[20px] font-semibold text-gray-900 whitespace-nowrap">
@@ -76,8 +69,6 @@ export default function MortgageLoans() {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Action Buttons */}
                             <div className="flex gap-3">
                                 <button className="bg-[#1B63ED] hover:bg-blue-700 text-white font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                     Müraciət edin
@@ -91,12 +82,8 @@ export default function MortgageLoans() {
                 </div>
 
                 <div className="border-b border-gray-200 my-10"></div>
-
-
-                {/* Second Loan Product */}
                 <div className="bg-white overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
-                        {/* Left side - Image */}
                         <div className="relative bg-gradient-to-br from-lime-400 to-lime-500 rounded-[20px] p-16 flex items-center justify-center w-full md:w-[416px] h-[416px] flex-shrink-0">
                             <div className="relative w-[280px] h-[280px]">
                                 <Image
@@ -108,8 +95,6 @@ export default function MortgageLoans() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right side - Content */}
                         <div className="flex-1 py-4">
                             <h2 className="text-[32px] font-medium text-gray-900 mb-5 leading-tight">
                                 Partnyor tikinti şirkətləri üzrə ipoteka krediti
@@ -118,8 +103,6 @@ export default function MortgageLoans() {
                             <p className="text-gray-600 text-[16px] leading-relaxed mb-8">
                                 Bankın partnyorları olan tikinti şirkətlərinə məxsus çıxarışsız mənzillərin, həmçinin fərdi yaşayış evlərinin alınması üçün nəzərdə tutulan daxili ipoteka kreditidir.
                             </p>
-
-                            {/* Loan Details Grid */}
                             <div className="grid grid-cols-4 gap-8 mb-8">
                                 <div className="space-y-1">
                                     <div className="text-[20px] font-bold text-gray-900 whitespace-nowrap">
@@ -157,8 +140,6 @@ export default function MortgageLoans() {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Action Button */}
                             <div className="flex gap-3">
                                 <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                     Daha ətraflı
@@ -167,14 +148,9 @@ export default function MortgageLoans() {
                         </div>
                     </div>
                 </div>
-
-                {/* Divider Line */}
                 <div className="border-b border-gray-200 my-10"></div>
-
-                {/* Third Loan Product */}
                 <div className="bg-white overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
-                        {/* Left side - Image */}
                         <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-[20px] p-16 flex items-center justify-center w-full md:w-[416px] h-[416px] flex-shrink-0">
                             <div className="relative w-[280px] h-[280px]">
                                 <Image
@@ -186,8 +162,6 @@ export default function MortgageLoans() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right side - Content */}
                         <div className="flex-1 py-4">
                             <h2 className="text-[32px] font-medium text-gray-900 mb-5 leading-tight">
                                 Torpaq ipoteka krediti
@@ -196,8 +170,6 @@ export default function MortgageLoans() {
                             <p className="text-gray-600 text-[16px] leading-relaxed mb-8">
                                 Bakı, Sumqayıt, Abşeron, Gəncə, Şamaxı, Qəbələ, Quba, Qusar, Xaçmaz ərazilərində çıxarış sənədi və təyinatı yaşayış sahəsi olan torpaq sahəsinin alışı üçün nəzərdə tutulan ipoteka kreditidir.
                             </p>
-
-                            {/* Loan Details Grid */}
                             <div className="grid grid-cols-4 gap-8 mb-8">
                                 <div className="space-y-1">
                                     <div className="text-[20px] font-bold text-gray-900 whitespace-nowrap">
@@ -235,8 +207,6 @@ export default function MortgageLoans() {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Action Buttons */}
                             <div className="flex gap-3">
                                 <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                     Müraciət edin
@@ -248,14 +218,9 @@ export default function MortgageLoans() {
                         </div>
                     </div>
                 </div>
-
-                {/* Divider Line */}
                 <div className="border-b border-gray-200 my-10"></div>
-
-                {/* Fourth Loan Product */}
                 <div className="bg-white overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
-                        {/* Left side - Image */}
                         <div className="relative bg-gradient-to-br from-purple-500 to-purple-600 rounded-[20px] p-16 flex items-center justify-center w-full md:w-[416px] h-[416px] flex-shrink-0">
                             <div className="relative w-[280px] h-[280px]">
                                 <Image
@@ -267,8 +232,6 @@ export default function MortgageLoans() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right side - Content */}
                         <div className="flex-1 py-4">
                             <h2 className="text-[32px] font-medium text-gray-900 mb-5 leading-tight">
                                 Ev tikinti ipoteka krediti
@@ -278,7 +241,6 @@ export default function MortgageLoans() {
                                 Yaşayış təyinatlı çıxarışlı torpaq sahəsində fərdi yaşayış evinin tikintisi üçün nəzərdə tutulan daxili ipoteka kreditidir.
                             </p>
 
-                            {/* Loan Details Grid */}
                             <div className="grid grid-cols-4 gap-8 mb-8">
                                 <div className="space-y-1">
                                     <div className="text-[20px] font-bold text-gray-900 whitespace-nowrap">
@@ -317,7 +279,6 @@ export default function MortgageLoans() {
                                 </div>
                             </div>
 
-                            {/* Action Buttons */}
                             <div className="flex gap-3">
                                 <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                     Müraciət edin
@@ -329,14 +290,10 @@ export default function MortgageLoans() {
                         </div>
                     </div>
                 </div>
-
-                {/* Divider Line */}
                 <div className="border-b border-gray-200 my-10"></div>
 
-                {/* Fifth Loan Product */}
                 <div className="bg-white overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
-                        {/* Left side - Image */}
                         <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-[20px] p-16 flex items-center justify-center w-full md:w-[416px] h-[416px] flex-shrink-0">
                             <div className="relative w-[280px] h-[280px]">
                                 <Image
@@ -348,8 +305,6 @@ export default function MortgageLoans() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right side - Content */}
                         <div className="flex-1 py-4">
                             <h2 className="text-[32px] font-medium text-gray-900 mb-5 leading-tight">
                                 İpoteka əmanəti krediti
@@ -359,7 +314,6 @@ export default function MortgageLoans() {
                                 Ali təhsil almaq istəyən gənclərimiz üçün xüsusi kredit məhsulu. Yerli və xarici universitetlərdə təhsil haqqını ödəmək üçün əlverişli şərtlərlə maliyyələşdirmə imkanı.
                             </p>
 
-                            {/* Loan Details Grid */}
                             <div className="grid grid-cols-4 gap-8 mb-8">
                                 <div className="space-y-1">
                                     <div className="text-[20px] font-bold text-gray-900 whitespace-nowrap">
@@ -397,8 +351,6 @@ export default function MortgageLoans() {
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Action Button */}
                             <div className="flex gap-3">
                                 <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                     Daha ətraflı
@@ -407,7 +359,6 @@ export default function MortgageLoans() {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
