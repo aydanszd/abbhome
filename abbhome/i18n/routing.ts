@@ -4,13 +4,14 @@ import { createNavigation } from 'next-intl/navigation';
 
 export const routing = defineRouting({
     // Bütün dəstəklənən dillər
-    locales: ['az', 'en', 'ru'],
+    locales: ['aze', 'en', 'ru'],
 
     // Default dil
-    defaultLocale: 'az',
+    defaultLocale: 'aze',
 
     // Locale prefix strategy
-    localePrefix: 'always' // URL-də həmişə /az, /en, /ru olacaq
+    // URL-də həmişə /aze, /en, /ru olacaq
+    localePrefix: 'always'
 });
 
 // Navigation helpers

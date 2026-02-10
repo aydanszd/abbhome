@@ -1,9 +1,17 @@
+// next.config.ts
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
     domains: ['cdn.abbhome.az', 'abbhome.az'],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.abbhome.az',
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
@@ -14,10 +22,6 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     unoptimized: process.env.NODE_ENV === 'development',
   },
-  // Development'ta loopback IP'lere izin ver
-  experimental: {
-    allowedOrigins: ['localhost:5000'],
-  },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

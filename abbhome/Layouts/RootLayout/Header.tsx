@@ -9,6 +9,8 @@ import {
 } from "@/Components/Ui/dropdown-menu"
 import { ChevronDown, Headphones, User, Menu, X, Home } from 'lucide-react';
 import { Fira_Sans, Inter } from 'next/font/google'
+import { usePathname, useRouter } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
 const fira = Fira_Sans({
     subsets: ['latin'],
@@ -46,13 +48,18 @@ export default function Navbar() {
     const [navbarWords, setNavbarWords] = React.useState<Record<string, Translation>>({});
     const [loading, setLoading] = React.useState(true);
     const [currentLang, setCurrentLang] = React.useState<Language>('az');
+    const router = useRouter();
+    const pathname = usePathname();
+    const locale = useLocale();
 
+    // URL-dəki locale-ə görə navbar dilini sinxron saxla
     React.useEffect(() => {
-        const savedLang = localStorage.getItem('language') as Language;
-        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
-            setCurrentLang(savedLang);
+        if (locale === 'aze') {
+            setCurrentLang('az');
+        } else if (locale === 'en' || locale === 'ru') {
+            setCurrentLang(locale as Language);
         }
-    }, []);
+    }, [locale]);
 
     React.useEffect(() => {
         const fetchNavbarWords = async () => {
@@ -95,8 +102,12 @@ export default function Navbar() {
 
     const handleLanguageChange = (lang: Language) => {
         setCurrentLang(lang);
+        // UI üçün dil (footer və s.)
         localStorage.setItem('language', lang);
-        window.dispatchEvent(new CustomEvent('languageChange', { detail: lang }));
+
+        // Router üçün locale: az -> aze, digərləri dəyişməz
+        const routerLocale = lang === 'az' ? 'aze' : lang;
+        router.replace(pathname, { locale: routerLocale });
     };
 
     const getText = (key: string): string => {

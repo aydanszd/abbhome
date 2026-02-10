@@ -6,9 +6,11 @@ export default createMiddleware(routing);
 
 export const config = {
     matcher: [
-        // Admin route-unu exclude et
-        '/((?!api|admin|_next|_vercel|.*\\..*).*)',
+        // Skip all internal paths (_next, _vercel)
+        '/((?!api|admin|_next/static|_next/image|_vercel|favicon.ico|.*\\..*|monitoring).*)',
+        // Root
         '/',
-        '/(az|en|ru)/:path*'
+        // Locale paths
+        '/(aze|en|ru)/:path*'
     ]
 };

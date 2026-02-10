@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
+import { useLocale } from 'next-intl';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -28,20 +29,16 @@ type Language = 'az' | 'en' | 'ru';
 export default function Footer() {
     const [words, setWords] = useState<Record<string, Translation>>({});
     const [currentLang, setCurrentLang] = useState<Language>('az');
+    const locale = useLocale();
 
+    // URL-dəki locale-ə görə footer dilini sinxron saxla
     useEffect(() => {
-        const savedLang = localStorage.getItem('language') as Language;
-        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
-            setCurrentLang(savedLang);
+        if (locale === 'aze') {
+            setCurrentLang('az');
+        } else if (locale === 'en' || locale === 'ru') {
+            setCurrentLang(locale as Language);
         }
-
-        const handleLanguageChange = (e: CustomEvent) => {
-            setCurrentLang(e.detail as Language);
-        };
-
-        window.addEventListener('languageChange', handleLanguageChange as EventListener);
-        return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
-    }, []);
+    }, [locale]);
 
     useEffect(() => {
         const fetchWords = async () => {

@@ -1,10 +1,11 @@
 import Header from "@/Layouts/RootLayout/Header";
 import Footer from "@/Layouts/RootLayout/Footer";
+import type { ReactNode } from "react";
 
 export default function MainLayout({
     children,
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
 }) {
     return (
         <>

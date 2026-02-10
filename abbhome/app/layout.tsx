@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -17,11 +18,8 @@ export const metadata: Metadata = {
   description: "Dövlət ipotekası və digər ipoteka məhsulları",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+// Kök layout: bütün route-lar üçün HTML/BODY burada verilir
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="az">
       <body
@@ -32,3 +30,4 @@ export default function RootLayout({
     </html>
   );
 }
+
