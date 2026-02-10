@@ -6,8 +6,8 @@ export default createMiddleware(routing);
 
 export const config = {
     matcher: [
-        // Bütün route-ları tut, ancaq static faylları yox
-        '/((?!api|_next|_vercel|.*\\..*).*)',
+        // Admin route-unu exclude et
+        '/((?!api|admin|_next|_vercel|.*\\..*).*)',
         '/',
         '/(az|en|ru)/:path*'
     ]

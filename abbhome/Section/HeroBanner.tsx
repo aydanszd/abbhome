@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useCallback, useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -110,7 +109,7 @@ const slides: SlideData[] = [
     }
 ]
 
-const AUTOPLAY_INTERVAL = 20000000 
+const AUTOPLAY_INTERVAL = 5000
 
 export default function MortgageCarousel() {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
