@@ -1,19 +1,95 @@
+'use client'
+
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
+import { useEffect, useState } from 'react';
 
 const inter = Inter({
     subsets: ['latin'],
     weight: ['400', '500', '700'],
 });
 
+interface Translation {
+    az: string;
+    en: string;
+    ru: string;
+}
+
+interface Word {
+    _id: string;
+    wordId: string;
+    translations: Translation;
+    description: string;
+    isActive: boolean;
+}
+
+type Language = 'az' | 'en' | 'ru';
+
 export default function Footer() {
+    const [words, setWords] = useState<Record<string, Translation>>({});
+    const [currentLang, setCurrentLang] = useState<Language>('az');
+
+    useEffect(() => {
+        const savedLang = localStorage.getItem('language') as Language;
+        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
+            setCurrentLang(savedLang);
+        }
+
+        const handleLanguageChange = (e: CustomEvent) => {
+            setCurrentLang(e.detail as Language);
+        };
+
+        window.addEventListener('languageChange', handleLanguageChange as EventListener);
+        return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+    }, []);
+
+    useEffect(() => {
+        const fetchWords = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/words`);
+                if (!response.ok) throw new Error('Failed to fetch words');
+                
+                const result = await response.json();
+                
+                let data: Word[];
+                
+                if (Array.isArray(result)) {
+                    data = result;
+                } else if (result.data && Array.isArray(result.data)) {
+                    data = result.data;
+                } else if (result.words && Array.isArray(result.words)) {
+                    data = result.words;
+                } else {
+                    throw new Error('Invalid response structure');
+                }
+                
+                const wordsMap = data
+                    .filter(item => item.wordId && item.wordId.startsWith('footer_'))
+                    .reduce((acc, item) => {
+                        acc[item.wordId] = item.translations;
+                        return acc;
+                    }, {} as Record<string, Translation>);
+                
+                setWords(wordsMap);
+            } catch (error) {
+                console.error('Error fetching footer words:', error);
+            }
+        };
+
+        fetchWords();
+    }, []);
+
+    const getText = (key: string): string => {
+        return words[key]?.[currentLang] || '';
+    };
+
     return (
         <footer className={`bg-[#F2F2F7] pt-16 pb-8 mt-16 ${inter.className}`}>
             <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                     <div>
                         <h3 className="text-gray-900 font-bold text-[16px] mb-6">
-                            Daxili ipoteka
+                            {getText('footer_domestic_mortgage')}
                         </h3>
                         <ul className="space-y-3 text-[14px]">
                             <li>
@@ -21,7 +97,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Mənzil, fərdi yaşayış və bağ evləri üçün ipoteka krediti
+                                    {getText('footer_apartment_house_mortgage')}
                                 </Link>
                             </li>
                             <li>
@@ -29,7 +105,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Partnyor tikinti şirkətləri üzrə ipoteka krediti
+                                    {getText('footer_partner_companies_mortgage')}
                                 </Link>
                             </li>
                             <li>
@@ -37,7 +113,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Torpaq ipoteka krediti
+                                    {getText('footer_land_mortgage')}
                                 </Link>
                             </li>
                             <li>
@@ -45,7 +121,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Ev tikinti ipoteka krediti
+                                    {getText('footer_construction_mortgage')}
                                 </Link>
                             </li>
                             <li>
@@ -53,7 +129,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    İpoteka əmanəti krediti
+                                    {getText('footer_mortgage_deposit')}
                                 </Link>
                             </li>
                             <li>
@@ -61,7 +137,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Biznes obyektinin alınması üçün ipoteka krediti
+                                    {getText('footer_business_property_mortgage')}
                                 </Link>
                             </li>
                             <li>
@@ -69,7 +145,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Qirov təminatlı istehak krediti
+                                    {getText('footer_secured_consumer_loan')}
                                 </Link>
                             </li>
                             <li>
@@ -77,14 +153,14 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Təmir krediti
+                                    {getText('footer_renovation_loan')}
                                 </Link>
                             </li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-gray-900 font-bold text-[16px] mb-6">
-                            Dövlət ipotekası
+                            {getText('footer_government_mortgage')}
                         </h3>
                         <ul className="space-y-3 text-[14px]">
                             <li>
@@ -92,7 +168,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Dövlət ipotekası - adi
+                                    {getText('footer_government_mortgage_regular')}
                                 </Link>
                             </li>
                             <li>
@@ -100,7 +176,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Dövlət ipotekası – güzəştli
+                                    {getText('footer_government_mortgage_preferential')}
                                 </Link>
                             </li>
                             <li>
@@ -108,14 +184,14 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    MİDA güzəştli ipoteka krediti
+                                    {getText('footer_mida_preferential_mortgage')}
                                 </Link>
                             </li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="text-gray-900 font-bold text-[16px] mb-6">
-                            Digər bölmələr
+                            {getText('footer_other_sections')}
                         </h3>
                         <ul className="space-y-3 text-[14px]">
                             <li>
@@ -123,7 +199,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    İpoteka filialları
+                                    {getText('footer_mortgage_branches')}
                                 </Link>
                             </li>
                             <li>
@@ -131,7 +207,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    TamKart Platinum kartı
+                                    {getText('footer_tamkart_platinum')}
                                 </Link>
                             </li>
                             <li>
@@ -139,7 +215,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    BDY geri al
+                                    {getText('footer_cashback')}
                                 </Link>
                             </li>
                             <li>
@@ -147,7 +223,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Təklif və iradlar
+                                    {getText('footer_feedback')}
                                 </Link>
                             </li>
                             <li>
@@ -155,7 +231,7 @@ export default function Footer() {
                                     href="#"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
-                                    Onlayn növbə
+                                    {getText('footer_online_queue')}
                                 </Link>
                             </li>
                         </ul>
@@ -212,7 +288,7 @@ export default function Footer() {
                     </Link>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-                    <p>© 1992—2026, ABB* ASC - Bütün hüquqlar qorunur</p>
+                    <p>{getText('footer_copyright')}</p>
                     <div className="flex items-center gap-2">
                         <svg
                             className="w-5 h-5 text-gray-400"

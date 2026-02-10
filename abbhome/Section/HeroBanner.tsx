@@ -5,6 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { Fira_Sans, Inter } from 'next/font/google'
+
 const fira = Fira_Sans({
     subsets: ['latin'],
     weight: ['500'],
@@ -15,22 +16,33 @@ const inter = Inter({
     weight: ['400', '500', '700'],
 })
 
+interface Translation {
+    az: string;
+    en: string;
+    ru: string;
+}
+
+interface Word {
+    _id: string;
+    wordId: string;
+    translations: Translation;
+    description: string;
+    isActive: boolean;
+}
+
+type Language = 'az' | 'en' | 'ru';
+
 interface CreditInfo {
     amount: string
-    amountLabel: string
     rate: string
-    rateLabel: string
     period: string
-    periodLabel: string
     payment: string
-    paymentLabel: string
 }
 
 interface SlideData {
-    title: string
-    description: string
-    buttonText: string
-    detailsText?: string
+    titleKey: string
+    descriptionKey: string
+    buttonTextKey: string
     image: string
     gradient: string
     creditInfo?: CreditInfo
@@ -38,81 +50,61 @@ interface SlideData {
 
 const slides: SlideData[] = [
     {
-        title: "İpoteka krediti ilə MTK-dan mənzil alın,ödənilmiş ƏDV-nin 30% sizə qalsın",
-        description: "\"Əmlakınızı qiymətləndirin\" aləti ilə daşınmaz əmlakın təxmini bazar qiymətini öyrənmək artıq asan oldu.",
-        buttonText: "İndi öyrənin",
-        detailsText: "Daha ətraflı",
+        titleKey: "carousel_slide1_title",
+        descriptionKey: "carousel_slide1_description",
+        buttonTextKey: "carousel_slide1_button",
         image: "https://cdn.abbhome.az/tamkart_slider_1_1fa6bedbef.png",
         gradient: "bg-gray-800",
         creditInfo: {
             amount: "200,000 AZN",
-            amountLabel: "Maksimal məbləğ",
             rate: "12%-dən",
-            rateLabel: "Minimal illik faiz",
             period: "15 ilədək",
-            periodLabel: "Maksimal müddət",
-            payment: "15%",
-            paymentLabel: "Minimal ilkin ödəniş"
+            payment: "15%"
         }
     },
     {
-        title: "İpoteka krediti ilə MTK-dan mənzil alın,ödənilmiş ƏDV-nin 30% sizə qalsın",
-        description: "Fərdi layihəniz ilə evə sahib olun – Tikinti ipoteka krediti ilə istədiyiniz evi tikin!",
-        buttonText: "Müraciət edin",
-        detailsText: "Daha ətraflı",
+        titleKey: "carousel_slide2_title",
+        descriptionKey: "carousel_slide2_description",
+        buttonTextKey: "carousel_slide2_button",
         image: "https://cdn.abbhome.az/construction_144e34074e.webp",
         gradient: "bg-purple-800",
         creditInfo: {
             amount: "150,000 AZN",
-            amountLabel: "Maksimal məbləğ",
             rate: "10%-dən",
-            rateLabel: "Minimal illik faiz",
             period: "20 ilədək",
-            periodLabel: "Maksimal müddət",
-            payment: "20%",
-            paymentLabel: "Minimal ilkin ödəniş"
+            payment: "20%"
         }
     },
     {
-        title: "İpoteka krediti ilə MTK-dan mənzil alın,ödənilmiş ƏDV-nin 30% sizə qalsın",
-        description: "Dövlət dəstəyi ilə sərfəli şərtlərlə mənzil əldə edin.",
-        buttonText: "Müraciət et",
-        detailsText: "Daha ətraflı",
+        titleKey: "carousel_slide3_title",
+        descriptionKey: "carousel_slide3_description",
+        buttonTextKey: "carousel_slide3_button",
         image: "https://cdn.abbhome.az/government_2146a202a2.webp",
         gradient: "bg-[#3BA6DE]",
         creditInfo: {
             amount: "100,000 AZN",
-            amountLabel: "Maksimal məbləğ",
             rate: "5%-dən",
-            rateLabel: "Minimal illik faiz",
             period: "25 ilədək",
-            periodLabel: "Maksimal müddət",
-            payment: "0%",
-            paymentLabel: "Minimal ilkin ödəniş"
+            payment: "0%"
         }
     },
     {
-        title: "İpoteka krediti ilə MTK-dan mənzil alın,ödənilmiş ƏDV-nin 30% sizə qalsın",
-        description: "Sərfəli faiz dərəcələri ilə təminatlı istehlak kreditindən yararlanın.",
-        buttonText: "Ətraflı",
-        detailsText: "Daha ətraflı",
+        titleKey: "carousel_slide4_title",
+        descriptionKey: "carousel_slide4_description",
+        buttonTextKey: "carousel_slide4_button",
         image: "https://cdn.abbhome.az/secured_consumer_991bfb9bcd.webp",
         gradient: "bg-[#0057c2]",
         creditInfo: {
             amount: "75,000 AZN",
-            amountLabel: "Maksimal məbləğ",
             rate: "14%-dən",
-            rateLabel: "Minimal illik faiz",
             period: "7 ilədək",
-            periodLabel: "Maksimal müddət",
-            payment: "25%",
-            paymentLabel: "Minimal ilkin ödəniş"
+            payment: "25%"
         }
     },
     {
-        title: "İpoteka krediti ilə MTK-dan mənzil alın,ödənilmiş ƏDV-nin 30% sizə qalsın",
-        description: "Seçilmiş partnyorlarımızdan alış-veriş edin və xüsusi endirimlər qazanın.",
-        buttonText: "Daha Ətraflı",
+        titleKey: "carousel_slide5_title",
+        descriptionKey: "carousel_slide5_description",
+        buttonTextKey: "carousel_slide5_button",
         image: "https://cdn.abbhome.az/d781b4fa223f598c9eb8dd5e5f33026ba21534c1_707f79ba33.png",
         gradient: "bg-gray-500"
     }
@@ -124,6 +116,62 @@ export default function MortgageCarousel() {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [progress, setProgress] = useState(0)
+    const [words, setWords] = useState<Record<string, Translation>>({})
+    const [currentLang, setCurrentLang] = useState<Language>('az')
+
+    useEffect(() => {
+        const savedLang = localStorage.getItem('language') as Language;
+        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
+            setCurrentLang(savedLang);
+        }
+
+        const handleLanguageChange = (e: CustomEvent) => {
+            setCurrentLang(e.detail as Language);
+        };
+
+        window.addEventListener('languageChange', handleLanguageChange as EventListener);
+        return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+    }, []);
+
+    useEffect(() => {
+        const fetchWords = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/words`);
+                if (!response.ok) throw new Error('Failed to fetch words');
+                
+                const result = await response.json();
+                
+                let data: Word[];
+                
+                if (Array.isArray(result)) {
+                    data = result;
+                } else if (result.data && Array.isArray(result.data)) {
+                    data = result.data;
+                } else if (result.words && Array.isArray(result.words)) {
+                    data = result.words;
+                } else {
+                    throw new Error('Invalid response structure');
+                }
+                
+                const wordsMap = data
+                    .filter(item => item.wordId && item.wordId.startsWith('carousel_'))
+                    .reduce((acc, item) => {
+                        acc[item.wordId] = item.translations;
+                        return acc;
+                    }, {} as Record<string, Translation>);
+                
+                setWords(wordsMap);
+            } catch (error) {
+                console.error('Error fetching carousel words:', error);
+            }
+        };
+
+        fetchWords();
+    }, []);
+
+    const getText = (key: string): string => {
+        return words[key]?.[currentLang] || '';
+    };
 
     const scrollPrev = useCallback(() => {
         if (emblaApi) emblaApi.scrollPrev()
@@ -175,14 +223,14 @@ export default function MortgageCarousel() {
                                     <div className="grid grid-cols-2 gap-8 items-center h-full">
                                         <div className="text-white space-y-6">
                                             <h1 className="text-4xl font-bold leading-tight">
-                                                {slide.title}
+                                                {getText(slide.titleKey)}
                                             </h1>
                                             <p className="text-lg text-white/90">
-                                                {slide.description}
+                                                {getText(slide.descriptionKey)}
                                             </p>
                                             {!slide.creditInfo && (
                                                 <button className="bg-white text-black px-6 py-3 rounded-[10px] font-semibold hover:bg-blue-50 transition-colors">
-                                                    {slide.buttonText}
+                                                    {getText(slide.buttonTextKey)}
                                                 </button>
                                             )}
                                         </div>
@@ -190,7 +238,7 @@ export default function MortgageCarousel() {
                                             <div className="relative w-full h-full">
                                                 <Image
                                                     src={slide.image}
-                                                    alt={slide.title}
+                                                    alt={getText(slide.titleKey)}
                                                     fill
                                                     className="object-contain"
                                                     priority={index === 0}
@@ -249,7 +297,7 @@ export default function MortgageCarousel() {
                                             {currentSlide.creditInfo.amount}
                                         </div>
                                         <div className="text-sm text-gray-500 mt-1">
-                                            {currentSlide.creditInfo.amountLabel}
+                                            {getText('carousel_maksimal_mebleg')}
                                         </div>
                                         <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-gray-200"></div>
                                     </div>
@@ -258,7 +306,7 @@ export default function MortgageCarousel() {
                                             {currentSlide.creditInfo.rate}
                                         </div>
                                         <div className="text-sm text-gray-500 mt-1">
-                                            {currentSlide.creditInfo.rateLabel}
+                                            {getText('carousel_minimal_faiz')}
                                         </div>
                                         <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-gray-200"></div>
                                     </div>
@@ -267,7 +315,7 @@ export default function MortgageCarousel() {
                                             {currentSlide.creditInfo.period}
                                         </div>
                                         <div className="text-sm text-gray-500 mt-1">
-                                            {currentSlide.creditInfo.periodLabel}
+                                            {getText('carousel_maksimal_muddet')}
                                         </div>
                                         <div className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-px bg-gray-200"></div>
                                     </div>
@@ -276,16 +324,16 @@ export default function MortgageCarousel() {
                                             {currentSlide.creditInfo.payment}
                                         </div>
                                         <div className="text-sm text-gray-500 mt-1">
-                                            {currentSlide.creditInfo.paymentLabel}
+                                            {getText('carousel_minimal_odenis')}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap">
-                                        {currentSlide.buttonText}
+                                        {getText(currentSlide.buttonTextKey)}
                                     </button>
                                     <button className="border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap">
-                                        {currentSlide.detailsText || "Daha ətraflı"}
+                                        {getText('carousel_daha_etraflı')}
                                     </button>
                                 </div>
                             </div>
@@ -294,28 +342,30 @@ export default function MortgageCarousel() {
                 )}
             </div>
             <div className={` ${currentSlide?.creditInfo ? "mt-24" : "mt-12"}`}>
-                <h2 className="text-[32px] font-bold mb-10 ml-15">İpoteka məhsulları</h2>
+                <h2 className="text-[32px] font-bold mb-10 ml-15">
+                    {getText('carousel_ipoteka_mehsullari')}
+                </h2>
                 <div className={`flex flex-wrap gap-3 max-w-300 mx-auto  ${fira.className}`}>
                     <button className=" text-[16px] px-6 py-3 bg-blue-100 text-blue-700 rounded-full font-normal hover:bg-blue-200 transition-colors">
-                        Hamısı
+                        {getText('carousel_hamisi')}
                     </button>
                     <button className="  text-[16px] px-6 py-3 bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Mənzil və həyət evləri
+                        {getText('carousel_menzil_evler')}
                     </button>
                     <button className=" text-[16px] px-6 py-3 bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Partnyor şirkətlər
+                        {getText('carousel_partnyor_sirketler')}
                     </button>
                     <button className=" text-[16px] px-6 py-3 bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Torpaq sahəsi
+                        {getText('carousel_torpaq_sahesi')}
                     </button>
                     <button className="px-6 py-3  text-[16px] bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Ev tikintisi və təmir
+                        {getText('carousel_ev_tikintisi')}
                     </button>
                     <button className="px-6 py-3  text-[16px] bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Dövlət ipotekası
+                        {getText('carousel_dovlet_ipotekasi')}
                     </button>
                     <button className="px-6 py-3  text-[16px] bg-gray-100 text-gray-600 rounded-full font-medium hover:bg-gray-200 transition-colors">
-                        Biznes obyekti
+                        {getText('carousel_biznes_obyekti')}
                     </button>
                 </div>
             </div>

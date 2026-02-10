@@ -1,11 +1,30 @@
+'use client'
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
+import { useEffect, useState } from 'react';
 
 const inter = Inter({
     subsets: ['latin'],
     weight: ['400', '500', '700'],
 });
+
+interface Translation {
+    az: string;
+    en: string;
+    ru: string;
+}
+
+interface Word {
+    _id: string;
+    wordId: string;
+    translations: Translation;
+    description: string;
+    isActive: boolean;
+}
+
+type Language = 'az' | 'en' | 'ru';
 
 interface Company {
     id: number;
@@ -61,18 +80,75 @@ const companies: Company[] = [
 ];
 
 export default function PartnerCompanies() {
+    const [words, setWords] = useState<Record<string, Translation>>({});
+    const [currentLang, setCurrentLang] = useState<Language>('az');
+
+    useEffect(() => {
+        const savedLang = localStorage.getItem('language') as Language;
+        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
+            setCurrentLang(savedLang);
+        }
+
+        const handleLanguageChange = (e: CustomEvent) => {
+            setCurrentLang(e.detail as Language);
+        };
+
+        window.addEventListener('languageChange', handleLanguageChange as EventListener);
+        return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
+    }, []);
+
+    useEffect(() => {
+        const fetchWords = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/words`);
+                if (!response.ok) throw new Error('Failed to fetch words');
+                
+                const result = await response.json();
+                
+                let data: Word[];
+                
+                if (Array.isArray(result)) {
+                    data = result;
+                } else if (result.data && Array.isArray(result.data)) {
+                    data = result.data;
+                } else if (result.words && Array.isArray(result.words)) {
+                    data = result.words;
+                } else {
+                    throw new Error('Invalid response structure');
+                }
+                
+                const wordsMap = data
+                    .filter(item => item.wordId && item.wordId.startsWith('partners_'))
+                    .reduce((acc, item) => {
+                        acc[item.wordId] = item.translations;
+                        return acc;
+                    }, {} as Record<string, Translation>);
+                
+                setWords(wordsMap);
+            } catch (error) {
+                console.error('Error fetching partner words:', error);
+            }
+        };
+
+        fetchWords();
+    }, []);
+
+    const getText = (key: string): string => {
+        return words[key]?.[currentLang] || '';
+    };
+
     return (
         <section className={`py-12 px-4 sm:px-6 lg:px-8 ${inter.className}`}>
             <div className="max-w-300 mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                        Partnyor tikinti şirkətləri
+                        {getText('partners_title')}
                     </h2>
                     <Link
                         href="/partners"
                         className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 transition-colors"
                     >
-                        Daha çox
+                        {getText('partners_view_more')}
                         <svg
                             className="w-5 h-5"
                             fill="none"
@@ -139,19 +215,16 @@ export default function PartnerCompanies() {
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
                                                 strokeWidth={2}
-                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 00-6.364 0z"
                                             />
                                         </svg>
                                     </div>
-                                    <span className="text-gray-900 font-semibold text-lg">{company.likes} Layihə</span>
+                                    <span className="text-gray-900 font-semibold text-lg">{company.likes} {getText('partners_project')}</span>
                                 </div>
                             </div>
-                            
                         </div>
-                        
                     ))}
                 </div>
-                
             </div>
         </section>
     );
