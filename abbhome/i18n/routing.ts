@@ -3,17 +3,11 @@ import { defineRouting } from 'next-intl/routing';
 import { createNavigation } from 'next-intl/navigation';
 
 export const routing = defineRouting({
-    // Bütün dəstəklənən dillər
     locales: ['aze', 'en', 'ru'],
-
-    // Default dil
     defaultLocale: 'aze',
-
-    // Locale prefix strategy
-    // URL-də həmişə /aze, /en, /ru olacaq
-    localePrefix: 'always'
+    localePrefix: 'always', // URL-də həmişə locale göstər
+    localeDetection: true // Browser dilini detect et
 });
 
-// Navigation helpers
-export const { Link, redirect, usePathname, useRouter } =
+export const { Link, redirect, usePathname, useRouter, getPathname } =
     createNavigation(routing);

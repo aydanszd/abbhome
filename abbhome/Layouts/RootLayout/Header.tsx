@@ -107,7 +107,8 @@ export default function Navbar() {
 
         // Router üçün locale: az -> aze, digərləri dəyişməz
         const routerLocale = lang === 'az' ? 'aze' : lang;
-        router.replace(pathname, { locale: routerLocale });
+        // Scroll yerində qalsın, yalnız dil dəyişsin
+        router.replace(pathname, { locale: routerLocale, scroll: false });
     };
 
     const getText = (key: string): string => {
