@@ -48,6 +48,12 @@ async function loadTranslations(locale: string) {
     });
 
     if (!response.ok) {
+      // 404 üçün error göstərmə, sadəcə xəbərdarlıq yaz və boş messages qaytar
+      if (response.status === 404) {
+        console.warn(`⚠️ No translations found for locale "${apiLocale}" (404). Using empty messages.`);
+        return translationCache.get(apiLocale) || {};
+      }
+
       console.error(`❌ Translation fetch failed: ${response.status}`);
       // Köhnə cache varsa, onu qaytar
       return translationCache.get(apiLocale) || {};
