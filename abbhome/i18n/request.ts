@@ -33,10 +33,11 @@ async function loadTranslations(locale: string) {
 
   try {
     const url = `${apiUrl}/translations/${apiLocale}`;
-    // Qısa timeout: API yavaşdırsa path tez dəyişsin, boş messages ilə açılsın (4s)
     const timeoutMs = 4000;
+    // Next.js cache: eyni locale üçün tərcümə 1 saat cache-də qalır, səhifə hər dəfə yenidən render olmur
     const response = await fetch(url, {
-      cache: 'no-store',
+      cache: 'force-cache',
+      next: { revalidate: 3600 },
       headers: { 'Content-Type': 'application/json' },
       signal: AbortSignal.timeout(timeoutMs),
     });

@@ -1,11 +1,28 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
+import { useEffect, useState } from 'react';
+import { useLocale } from 'next-intl';
 
 const inter = Inter({
     subsets: ['latin'],
     weight: ['400', '500', '700'],
 });
+
+interface Translation {
+    az: string;
+    en: string;
+    ru: string;
+}
+
+interface Word {
+    wordId: string;
+    translations: Translation;
+}
+
+type Language = 'az' | 'en' | 'ru';
 
 interface Company {
     id: number;
@@ -60,19 +77,43 @@ const companies: Company[] = [
     },
 ];
 
+const PARTNER_KEYS = ['partners_title', 'partners_view_more', 'partners_project'];
+
 export default function PartnerCompanies() {
+    const [words, setWords] = useState<Record<string, Translation>>({});
+    const locale = useLocale();
+    const currentLang: Language = locale === 'aze' ? 'az' : (locale === 'en' || locale === 'ru' ? locale : 'az');
+
+    useEffect(() => {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl) return;
+        fetch(`${apiUrl}/api/words`)
+            .then((res) => res.ok ? res.json() : null)
+            .then((result) => {
+                const data: Word[] = Array.isArray(result) ? result : result?.data ?? result?.words ?? [];
+                const map: Record<string, Translation> = {};
+                data
+                    .filter((item) => item.wordId && PARTNER_KEYS.includes(item.wordId))
+                    .forEach((item) => { map[item.wordId] = item.translations; });
+                setWords(map);
+            })
+            .catch(() => {});
+    }, []);
+
+    const getText = (key: string, fallback: string) => words[key]?.[currentLang] || fallback;
+
     return (
         <section className={`py-12 px-4 sm:px-6 lg:px-8 ${inter.className}`}>
             <div className="max-w-300 mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                        Partnyor tikinti şirkətləri
+                        {getText('partners_title', 'Partnyor tikinti şirkətləri')}
                     </h2>
                     <Link
                         href="/partners"
                         className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 transition-colors"
                     >
-                        Daha çox
+                        {getText('partners_view_more', 'Daha çox')}
                         <svg
                             className="w-5 h-5"
                             fill="none"
@@ -143,7 +184,7 @@ export default function PartnerCompanies() {
                                             />
                                         </svg>
                                     </div>
-                                    <span className="text-gray-900 font-semibold text-lg">{company.likes} Layihə</span>
+                                    <span className="text-gray-900 font-semibold text-lg">{company.likes} {getText('partners_project', 'Layihə')}</span>
                                 </div>
                             </div>
                             
