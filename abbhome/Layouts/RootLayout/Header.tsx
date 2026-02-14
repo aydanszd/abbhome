@@ -105,7 +105,7 @@ export default function Navbar() {
         setCurrentLang(lang);
         localStorage.setItem('language', lang);
         document.cookie = `NEXT_LOCALE=${routerLocale};path=/;max-age=31536000`;
-        // Path-i dərhal yenilə ki, gecikmə hiss olunmasın
+        // Path-i dərhal yenilə
         const base = pathname && pathname !== '/' ? pathname : '/home';
         const newPath = `/${routerLocale}${base}`;
         if (typeof window !== 'undefined') {

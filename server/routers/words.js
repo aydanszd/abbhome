@@ -1,4 +1,3 @@
-// routers/words.js
 const express = require('express');
 const router = express.Router();
 const Word = require('../models/Word');
@@ -51,8 +50,6 @@ router.get('/by-id/:wordId', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-
-// Create word (3 dilli)
 router.post('/', async (req, res) => {
     try {
         const { wordId, translations, description } = req.body;

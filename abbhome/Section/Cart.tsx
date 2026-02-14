@@ -8,7 +8,6 @@ const inter = Inter({
     weight: ['400', '500', '700'],
 });
 
-// Type definitions
 interface Product {
     _id: string;
     name: string;
@@ -166,8 +165,6 @@ export default function MortgageLoans() {
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        {/* Buttons */}
                                         <div className="flex flex-col sm:flex-row gap-3">
                                             <button className="bg-[#1B63ED] hover:bg-blue-700 text-white font-medium px-7 py-3 rounded-lg transition-all duration-200">
                                                 Müraciət edin
@@ -179,8 +176,6 @@ export default function MortgageLoans() {
                                     </div>
                                 </div>
                             </div>
-                            
-                            {/* Divider */}
                             {index < products.length - 1 && (
                                 <div className="border-b border-gray-200 my-10"></div>
                             )}
