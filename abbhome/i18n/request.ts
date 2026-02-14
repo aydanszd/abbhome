@@ -17,14 +17,10 @@ async function loadTranslations(locale: string) {
   const apiLocale = mapLocaleForApi(locale);
   const now = Date.now();
   
-  // Cache yoxla və vaxtı yoxla
   if (translationCache.has(apiLocale)) {
     const cacheTime = cacheTimestamps.get(apiLocale) || 0;
     if (now - cacheTime < CACHE_DURATION) {
-      console.log(`✅ Cache hit for ${apiLocale}`);
       return translationCache.get(apiLocale);
-    } else {
-      console.log(`⏰ Cache expired for ${apiLocale}`);
     }
   }
   
@@ -37,40 +33,34 @@ async function loadTranslations(locale: string) {
 
   try {
     const url = `${apiUrl}/translations/${apiLocale}`;
-    console.log(`📡 Fetching translations from: ${url}`);
-    
+    // Timeout: API yoxdursa və ya yavaşdırsa səhifə yenə də açılsın (30s)
+    const timeoutMs = 30000;
     const response = await fetch(url, {
-      cache: 'no-store', // Server cache-ni söndür, öz cache-imizi istifadə edirik
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: AbortSignal.timeout(10000),
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(timeoutMs),
     });
 
     if (!response.ok) {
-      // 404 üçün error göstərmə, sadəcə xəbərdarlıq yaz və boş messages qaytar
       if (response.status === 404) {
-        console.warn(`⚠️ No translations found for locale "${apiLocale}" (404). Using empty messages.`);
+        console.warn(`⚠️ No translations for "${apiLocale}" (404). Using empty messages.`);
         return translationCache.get(apiLocale) || {};
       }
-
-      console.error(`❌ Translation fetch failed: ${response.status}`);
-      // Köhnə cache varsa, onu qaytar
       return translationCache.get(apiLocale) || {};
     }
 
     const data = await response.json();
-    
-    // Cache-ə əlavə et
     translationCache.set(apiLocale, data);
     cacheTimestamps.set(apiLocale, now);
-    console.log(`✅ Translations cached for ${apiLocale}`);
-    
     return data;
-    
-  } catch (error) {
-    console.error(`❌ Failed to load translations for ${locale}:`, error);
-    // Köhnə cache varsa, onu qaytar
+  } catch (error: unknown) {
+    // Timeout və ya şəbəkə xətası: error çap etmə, sadəcə boş messages ilə davam et
+    const isTimeout =
+      error instanceof Error &&
+      ('name' in error ? error.name === 'TimeoutError' : (error as { code?: number }).code === 23);
+    if (isTimeout) {
+      console.warn(`⚠️ Translations for "${apiLocale}" timed out. Using empty messages.`);
+    }
     return translationCache.get(apiLocale) || {};
   }
 }

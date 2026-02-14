@@ -102,12 +102,9 @@ export default function Navbar() {
 
     const handleLanguageChange = (lang: Language) => {
         setCurrentLang(lang);
-        // UI üçün dil (footer və s.)
         localStorage.setItem('language', lang);
-
-        // Router üçün locale: az -> aze, digərləri dəyişməz
         const routerLocale = lang === 'az' ? 'aze' : lang;
-        // Scroll yerində qalsın, yalnız dil dəyişsin
+        document.cookie = `NEXT_LOCALE=${routerLocale};path=/;max-age=31536000`;
         router.replace(pathname, { locale: routerLocale, scroll: false });
     };
 

@@ -4,6 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { Fira_Sans, Inter } from 'next/font/google'
+import { useLocale } from 'next-intl'
 
 const fira = Fira_Sans({
     subsets: ['latin'],
@@ -117,20 +118,12 @@ export default function MortgageCarousel() {
     const [progress, setProgress] = useState(0)
     const [words, setWords] = useState<Record<string, Translation>>({})
     const [currentLang, setCurrentLang] = useState<Language>('az')
+    const locale = useLocale()
 
     useEffect(() => {
-        const savedLang = localStorage.getItem('language') as Language;
-        if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
-            setCurrentLang(savedLang);
-        }
-
-        const handleLanguageChange = (e: CustomEvent) => {
-            setCurrentLang(e.detail as Language);
-        };
-
-        window.addEventListener('languageChange', handleLanguageChange as EventListener);
-        return () => window.removeEventListener('languageChange', handleLanguageChange as EventListener);
-    }, []);
+        if (locale === 'aze') setCurrentLang('az')
+        else if (locale === 'en' || locale === 'ru') setCurrentLang(locale as Language)
+    }, [locale])
 
     useEffect(() => {
         const fetchWords = async () => {
