@@ -33,8 +33,8 @@ async function loadTranslations(locale: string) {
 
   try {
     const url = `${apiUrl}/translations/${apiLocale}`;
-    // Timeout: API yoxdursa və ya yavaşdırsa səhifə yenə də açılsın (30s)
-    const timeoutMs = 30000;
+    // Qısa timeout: API yavaşdırsa path tez dəyişsin, boş messages ilə açılsın (4s)
+    const timeoutMs = 4000;
     const response = await fetch(url, {
       cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },

@@ -101,11 +101,19 @@ export default function Navbar() {
     }, []);
 
     const handleLanguageChange = (lang: Language) => {
+        const routerLocale = lang === 'az' ? 'aze' : lang;
         setCurrentLang(lang);
         localStorage.setItem('language', lang);
-        const routerLocale = lang === 'az' ? 'aze' : lang;
         document.cookie = `NEXT_LOCALE=${routerLocale};path=/;max-age=31536000`;
-        router.replace(pathname, { locale: routerLocale, scroll: false });
+        // Path-i dərhal yenilə ki, gecikmə hiss olunmasın
+        const base = pathname && pathname !== '/' ? pathname : '/home';
+        const newPath = `/${routerLocale}${base}`;
+        if (typeof window !== 'undefined') {
+            window.history.replaceState(null, '', newPath);
+        }
+        React.startTransition(() => {
+            router.replace(pathname, { locale: routerLocale, scroll: false });
+        });
     };
 
     const getText = (key: string): string => {
